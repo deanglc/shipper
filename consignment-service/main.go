@@ -5,7 +5,7 @@ import (
 	"net"
 
 	// 导入生成的 protobuf 代码
-	pb "consignment-service/proto/consignment"
+	pb "github.com/deanglc/shipper/consignment-service/proto/consignment"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

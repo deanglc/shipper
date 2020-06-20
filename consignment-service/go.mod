@@ -1,4 +1,4 @@
-module consignment-service
+module github.com/deanglc/shipper/consignment-service
 
 go 1.14
 
