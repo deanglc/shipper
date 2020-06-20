@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	pb "consignment-service/proto/consignment"
+	pb "github.com/deanglc/shipper/consignment-service/proto/consignment"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
