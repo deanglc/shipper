@@ -17,6 +17,7 @@ const (
 
 type IRepository interface {
 	Create(*pb.Consignment) (*pb.Consignment, error)
+	GetAll() []*pb.Consignment
 }
 
 // Repository - 一个模拟数据存储的虚拟仓库，以后我们会替换成真实的数据仓库
@@ -28,6 +29,10 @@ func (repo *Repository) Create(consignment *pb.Consignment) (*pb.Consignment, er
 	updated := append(repo.consignments, consignment)
 	repo.consignments = updated
 	return consignment, nil
+}
+
+func (repo *Repository) GetAll() []*pb.Consignment {
+	return repo.consignments
 }
 
 // 服务需要实现所有在 protobuf 里定义的方法。
@@ -49,6 +54,11 @@ func (s *service) CreateConsignment(ctx context.Context, req *pb.Consignment) (*
 	return &pb.Response{Created: true, Consignment: consignment}, nil
 }
 
+func (s *service) GetConsignments(ctx context.Context, req *pb.GetRequest) (*pb.Response, error) {
+	consignments := s.repo.GetAll()
+	return &pb.Response{Consignments: consignments}, nil
+}
+
 func main() {
 
 	repo := &Repository{}
@@ -60,7 +70,7 @@ func main() {
 	}
 	s := grpc.NewServer()
 
-	// 注册服务到 gRPC 服务器，会把已定义的 protobuf 与自动生成的代码接口进行绑定。
+	//注册服务到 gRPC 服务器，会把已定义的 protobuf 与自动生成的代码接口进行绑定。
 	pb.RegisterShippingServiceServer(s, &service{repo})
 
 	// 在 gRPC 服务器上注册 reflection 服务。
